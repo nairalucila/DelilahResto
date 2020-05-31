@@ -1,0 +1,10 @@
+/registro
+/singIn
+/explorador
+/favoritos
+
+/carrito
+
+/productorecibido
+/historial
+/admin
