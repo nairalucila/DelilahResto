@@ -1,30 +1,38 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const bodyParser = require('body-parser');
-//const db = require('./db');
+const bodyParser = require("body-parser");
+const db = require("./db");
 
 //CONFIGURACION
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.post('/', (req, res) => {
-    res.json(req.body);
-  })
+app.use(bodyParser.urlencoded({ extended: true }));
+app.post("/", (req, res) => {
+  res.json(req.body);
+});
 
- //REGISTRO
+//REGISTRO
 
 //RUTAS
 
-app.get('/', (req, res)=>{
+app.get("/", (req, res) => {
 
-  // traer todos
-  //db.Usuario.findAll()
+  //Traer todos
+  db.Usuario.findAll({
+    attributes: ["username"],
+  })
+    .then((usuarios) => {
+      console.log("usuarios =>>> ", usuarios);
+    })
+    .catch((err) => {
+      console.log("Error al traer el usuario", err);
+    });
 
-  // crear entrada en tabla
+  //crear entrada en tabla
   // db.Usuario.create({
-  //   username: 'Fulano123',
-  //   fullname: "fulano garcia",
-  //   email: "fulanesco@gmail.com",
-  //   telefono: '351555858',
+  //   username: 'ruperta',
+  //   fullname: "rupertao garcia",
+  //   email: "fulanescrrrrro@gmail.com",
+  //   telefono: '351555823158',
   //   direccion_envio: "8 de mayo 123",
   //   contraseña: "fulanesco123"
 
@@ -35,29 +43,36 @@ app.get('/', (req, res)=>{
   //   console.log('error');
 
   // })
-    res.send('Hola mundo');
+
+  res.send("Hola mundo");
 });
 
 
+//***falta contraseña */
+app.post("/registro", (req, res) => {
+  
+  const newUser = req.body;
+  if (!newUser) {
+   return res.status(400).send("Bad request");
+  }
 
-app.get('/explorador', (req, res)=>{
-
-  res.send('Lista de  platos');
-
+  db.Usuario.create(newUser)
+    .then(() => res.send("Usuario creado exitosamente"))
+    .catch(() => res.status(500).send("Error en el servidor"));
 });
 
 
-
-app.get('/carrito', (req, res) =>{
-
-  res.send('hamburguesa doble')
+//////////////////////////////////////////
+app.get("/explorador", (req, res) => {
+  res.send("Lista de  platos");
 });
 
-
-
+app.get("/carrito", (req, res) => {
+  res.send("hamburguesa doble");
+});
 
 //SERVIDOR
 
-app.listen(3000, () =>{
- console.log('servidor funcionando');
+app.listen(3000, () => {
+  console.log("servidor funcionando");
 });

@@ -8,3 +8,17 @@
 /productorecibido
 /historial
 /admin
+
+//fazt : singup: 2:11:35
+
+//datos de base de datos remotemyql
+
+Username: Q2gfbSmPW3
+
+Database name: Q2gfbSmPW3
+
+Password: C8eE5Isasu
+
+Server: remotemysql.com
+
+Port: 3306
