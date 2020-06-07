@@ -6,11 +6,11 @@ module.exports = (sequelize, type) => {
       autoIncrement: true,
       notNull: true,
     },
-    username: {
+    nombreUsuario: {
       type: type.STRING,
       notNull: true,
     },
-    fullname: {
+    nombreCompleto: {
       type: type.STRING,
       notNull: true,
     },
@@ -18,7 +18,7 @@ module.exports = (sequelize, type) => {
       type: type.STRING,
       isEmail: true,
       notNull: true,
-      unique: true
+      unique: true,
     },
     tel: {
       type: type.INTEGER,
@@ -33,5 +33,13 @@ module.exports = (sequelize, type) => {
       notNull: true,
       isAlphanumeric: true,
     },
+    esAdministrador: {
+      type: type.BOOLEAN,
+      notNull: true,
+      defaultValue: true
+      
+    },
   });
+
 };
+

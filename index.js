@@ -2,6 +2,10 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const db = require("./db");
+const jwt = require('jsonwebtoken');
+const secreto = "A2dvWGM46yeAe9G";
+
+
 
 //CONFIGURACION
 app.use(bodyParser.json());
@@ -27,6 +31,7 @@ app.get("/", (req, res) => {
       console.log("Error al traer el usuario", err);
     });
 
+   
   //crear entrada en tabla
   // db.Usuario.create({
   //   username: 'ruperta',
@@ -69,6 +74,21 @@ app.get("/explorador", (req, res) => {
 
 app.get("/carrito", (req, res) => {
   res.send("hamburguesa doble");
+});
+
+
+app.post("/carrito", (req, res) => {
+
+//   const newPedido = req.body;
+//   if (!newPedido) {
+//    return res.status(400).send("Bad request");
+//   }
+
+//   db.Pedido.create(newPedido)
+//     .then(() => res.send("Usuario creado exitosamente"))
+//     .catch(() => res.status(500).send("Error en el servidor"));
+// });
+  
 });
 
 //SERVIDOR
