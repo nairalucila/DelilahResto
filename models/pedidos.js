@@ -8,7 +8,7 @@ module.exports = (sequelize, type) => {
     },
     
     usuarioId: {
-      type: type.DATE,
+      type: type.INTEGER,
       notNull: true,
       references: {
         model: 'usuarios',
@@ -17,7 +17,7 @@ module.exports = (sequelize, type) => {
     },
 
     platoId: {
-      type: type.DATE,
+      type: type.INTEGER,
       notNull: true,
       references: {
         model: 'platos',

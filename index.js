@@ -77,7 +77,7 @@ app.get("/carrito", (req, res) => {
 });
 
 
-app.post("/carrito", (req, res) => {
+//app.post("/carrito", (req, res) => {
 
 //   const newPedido = req.body;
 //   if (!newPedido) {
@@ -89,7 +89,7 @@ app.post("/carrito", (req, res) => {
 //     .catch(() => res.status(500).send("Error en el servidor"));
 // });
   
-});
+//});
 
 //SERVIDOR
 
