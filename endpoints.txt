@@ -22,3 +22,18 @@ Password: C8eE5Isasu
 Server: remotemysql.com
 
 Port: 3306
+
+
+//aca no trare nada
+app.get("/", (req, res) => {
+
+  //Traer todos
+  db.Usuario.findAll({
+    attributes: ["username"],
+  })
+    .then((usuarios) => {
+      console.log("usuarios =>>> ", usuarios);
+    })
+    .catch((err) => {
+      console.log("Error al traer el usuario", err);
+    });
