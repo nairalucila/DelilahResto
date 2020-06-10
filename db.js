@@ -6,6 +6,7 @@ const platoModelo = require("./models/platos");
 const pedidoModelo = require("./models/pedidos");
 
 
+
 const sequelize = new Sequelize("Q2gfbSmPW3", "Q2gfbSmPW3", "C8eE5Isasu", {
   host: "remotemysql.com",
   dialect: "mysql",
@@ -15,6 +16,7 @@ const sequelize = new Sequelize("Q2gfbSmPW3", "Q2gfbSmPW3", "C8eE5Isasu", {
 const Usuario = usuariosModelo(sequelize, Sequelize);
 const Plato = platoModelo(sequelize, Sequelize);
 const Pedido = pedidoModelo(sequelize, Sequelize);
+//const Estado = estadoModelo (sequelize, Sequelize);
 
 
 
@@ -48,6 +50,7 @@ const createAdmin = () => {
 Usuario.hasMany(Pedido);
 Plato.hasMany(Pedido);
 
+
 sequelize
   .sync({ force: false })
   .then(() => {
@@ -67,4 +70,4 @@ sequelize
 
 createAdmin();
 
-module.exports = { Usuario, Plato, Pedido}; //exporte tabla usuario
+module.exports = { Usuario, Plato, Pedido }; //exporte tabla usuario

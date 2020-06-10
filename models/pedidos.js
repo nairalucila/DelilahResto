@@ -15,7 +15,7 @@ module.exports = (sequelize, type) => {
         key: 'id'
       }
     },
-
+  // join junntar tablas
     platoId: {
       type: type.INTEGER,
       notNull: true,
@@ -27,16 +27,37 @@ module.exports = (sequelize, type) => {
 
     fecha: {
       type: type.DATE,
-      notNull: true
+      allowNull: false
     },
+
+    hora: {
+      type: type.DATE(4),
+      allowNull: false
+    },
+
     cantidad: {
       type: type.INTEGER,
       notNull: true,
     },
+
     total: {
       type: type.INTEGER,
       notNull: true,
     },
+
+    estado: {
+      type: type.STRING,
+      defaultValue: "Nuevo"
+      
+    },
+    direccionEnvio: {
+      type: type.STRING,
+      notNull: false,
+      references: {
+        model: 'usuario',
+        key: 'direccion_envio'
+      }
+    }
   });
 };
 

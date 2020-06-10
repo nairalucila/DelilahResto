@@ -5,6 +5,8 @@ const db = require("./db");
 const jwt = require('jsonwebtoken');
 const secreto = "A2dvWGM46yeAe9G";
 
+const {Plato} = require("./db")
+const {Usuario} = require("./db")
 
 
 //CONFIGURACION
@@ -18,20 +20,18 @@ app.post("/", (req, res) => {
 
 //RUTAS
 
-app.get("/", (req, res) => {
+//aca no trare nada
+app.get("/inicio", async (req, res) => {
+//falta try y catch
 
-  //Traer todos
-  db.Usuario.findAll({
-    attributes: ["username"],
-  })
-    .then((usuarios) => {
-      console.log("usuarios =>>> ", usuarios);
-    })
-    .catch((err) => {
-      console.log("Error al traer el usuario", err);
-    });
 
-   
+  await db.Usuario.findAll();
+   res.json();
+ 
+});
+
+///   BORRAR TABLAS PHP MYADMNN
+
   //crear entrada en tabla
   // db.Usuario.create({
   //   username: 'ruperta',
@@ -49,8 +49,22 @@ app.get("/", (req, res) => {
 
   // })
 
-  res.send("Hola mundo");
+
+//});
+
+
+//esto anda bien
+app.delete("/registro/:id", async (req, res)=> {
+
+  await db.Usuario.destroy ({
+
+    where: {id: req.params.id}
+
+  });
+  res.json({success: 'exito borrado'});
 });
+    
+
 
 
 //***falta contraseña */
@@ -70,7 +84,9 @@ app.post("/registro", (req, res) => {
 //////////////////////////////////////////
 app.get("/explorador", (req, res) => {
   res.send("Lista de  platos");
+
 });
+
 
 app.get("/carrito", (req, res) => {
   res.send("hamburguesa doble");
@@ -90,6 +106,29 @@ app.get("/carrito", (req, res) => {
 // });
   
 //});
+
+//ADMINISTRADOR
+
+app.post("/platos", (req, res)=>{
+
+  const nuevoPlato = req.body;
+  if (!nuevoPlato) {
+   return res.status(400).send("Bad request");
+  }
+
+  db.Plato.create(nuevoPlato)
+    .then(() => res.send("creado exitosamente"))
+    .catch(() => res.status(500).send("Error en el servidor"));
+
+});
+
+app.get("/explorador", async (req, res) => {
+  
+  await db.Plato.findAll();
+  res.json(platos);
+ 
+
+})
 
 //SERVIDOR
 
