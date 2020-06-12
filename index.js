@@ -7,6 +7,8 @@ const secreto = "A2dvWGM46yeAe9G";
 
 const {Plato} = require("./db")
 const {Usuario} = require("./db")
+const {Pedido} = require("./db");
+const platos = require("./models/platos");
 
 
 //CONFIGURACION
@@ -26,7 +28,7 @@ app.get("/inicio", async (req, res) => {
 
 
   await db.Usuario.findAll();
-   res.json();
+   res.json({Usuario});
  
 });
 
@@ -82,14 +84,10 @@ app.post("/registro", (req, res) => {
 
 
 //////////////////////////////////////////
-app.get("/explorador", (req, res) => {
-  res.send("Lista de  platos");
 
-});
-
-
-app.get("/carrito", (req, res) => {
-  res.send("hamburguesa doble");
+app.post("/carrito", async (req, res) => {
+  await res.json({success: 'carrito'})
+ 
 });
 
 
@@ -107,29 +105,42 @@ app.get("/carrito", (req, res) => {
   
 //});
 
-//ADMINISTRADOR
-
-app.post("/platos", (req, res)=>{
-
-  const nuevoPlato = req.body;
-  if (!nuevoPlato) {
-   return res.status(400).send("Bad request");
-  }
-
-  db.Plato.create(nuevoPlato)
-    .then(() => res.send("creado exitosamente"))
-    .catch(() => res.status(500).send("Error en el servidor"));
-
-});
+//////// PLATOS
 
 app.get("/explorador", async (req, res) => {
   
-  await db.Plato.findAll();
+  const platos = await Plato.findAll();
   res.json(platos);
  
 
-})
+});
 
+app.post("/crearplatos", (req, res)=>{
+
+ const plato = req.body;
+  if (!plato) {
+    
+    return res.status(400).send("Bad request");
+   }
+   db.Plato.create(plato)
+
+     .then(() => res.send("Plato creado exitosamente"))
+     .catch(() => res.status(500).send("Error al crear plato"));
+ });
+
+
+ app.delete("/:platosId", async (req, res)=>{
+
+  await Plato.destroy({
+    where: {id: req.params.platosId}
+  });
+
+  res.json({success: 'Borrado exitosamente'}); 
+ 
+ });
+
+
+   
 //SERVIDOR
 
 app.listen(3000, () => {

@@ -16,8 +16,30 @@ const sequelize = new Sequelize("Q2gfbSmPW3", "Q2gfbSmPW3", "C8eE5Isasu", {
 const Usuario = usuariosModelo(sequelize, Sequelize);
 const Plato = platoModelo(sequelize, Sequelize);
 const Pedido = pedidoModelo(sequelize, Sequelize);
-//const Estado = estadoModelo (sequelize, Sequelize);
 
+
+const crearPlatos = () => {
+  const plato = Plato.findOne({
+    where: {
+      id: 1,
+    },
+  })
+  
+ if(!plato){
+  Plato.create({
+    nombre: "Empanadas",
+    fullname: "Admin",
+    descripcion: "árabes",
+    precio: "210"
+    
+  })
+
+    .then(() => console.log("Plato creado exitosamente"))
+    .catch((errorPlato) => console.log(errorPlato, "Error al crear su Plato"));
+
+};
+}
+//crearPlatos();
 
 
 const createAdmin = () => {
@@ -29,10 +51,10 @@ const createAdmin = () => {
     .then((admin) => {
       if (!admin) {
         Usuario.create({
-          username: "Admin",
-          fullname: "Admin",
+          nombreUsuario: "Admin",
+          nombreCompleto: "Admin",
           email: "admin@gmail.com",
-          telefono: "351000000",
+          tel: "351000000",
           direccion_envio: "ninguna",
           contraseña: "Admin:123",
           // esAdministrador: true,
