@@ -18,13 +18,12 @@ app.post("/", (req, res) => {
   res.json(req.body);
 });
 
-//REGISTRO
+
 
 //RUTAS
 
-//aca no trare nada
 app.get("/inicio", async (req, res) => {
-//falta try y catch
+  //aca trae un objeto vacio
 
 
   await db.Usuario.findAll();
@@ -32,7 +31,6 @@ app.get("/inicio", async (req, res) => {
  
 });
 
-///   BORRAR TABLAS PHP MYADMNN
 
   //crear entrada en tabla
   // db.Usuario.create({
@@ -56,54 +54,54 @@ app.get("/inicio", async (req, res) => {
 
 
 //esto anda bien
-app.delete("/registro/:id", async (req, res)=> {
+
+   
+
+//***falta contraseña */
+app.post("/registro", (req, res) => {
+  
+  const newUser = req.body;
+  
+   if (!newUser) {
+   res.status(400).send("Bad request");
+  }   
+  db.Usuario.create(newUser)
+    .then(() => res.send("Usuario creado exitosamente").status(200))
+    .catch((err) => res.status(500).send(err, "Error en el servidor"));
+});
+
+
+
+app.delete("/eliminarregistro/:id", async (req, res)=> {
 
   await db.Usuario.destroy ({
 
     where: {id: req.params.id}
 
   });
-  res.json({success: 'exito borrado'});
+  res.json({success: 'Usuario borado'});
 });
-    
-
-
-
-//***falta contraseña */
-app.post("/registro", (req, res) => {
-  
-  const newUser = req.body;
-  if (!newUser) {
-   return res.status(400).send("Bad request");
-  }
-
-  db.Usuario.create(newUser)
-    .then(() => res.send("Usuario creado exitosamente"))
-    .catch(() => res.status(500).send("Error en el servidor"));
-});
-
 
 //////////////////////////////////////////
 
-app.post("/carrito", async (req, res) => {
-  await res.json({success: 'carrito'})
- 
+
+
+app.post("/carrito", (req, res) => {
+
+  const newPedido = req.body;
+  if (!newPedido) {
+   return res.status(400).send("Bad request");
+  }
+
+  db.Pedido.create(newPedido)
+    .then(() => res.send("PEDIDO creado exitosamente"))
+    .catch((err) => res.status(500).send(err, "Error al crear su pedido"));
 });
 
 
-//app.post("/carrito", (req, res) => {
-
-//   const newPedido = req.body;
-//   if (!newPedido) {
-//    return res.status(400).send("Bad request");
-//   }
-
-//   db.Pedido.create(newPedido)
-//     .then(() => res.send("Usuario creado exitosamente"))
-//     .catch(() => res.status(500).send("Error en el servidor"));
-// });
+// app.get('')
   
-//});
+
 
 //////// PLATOS
 

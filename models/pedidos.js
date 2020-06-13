@@ -26,13 +26,13 @@ module.exports = (sequelize, type) => {
     },
 
     fecha: {
-      type: type.DATE,
-      allowNull: false
+      type: type.DATE(),
+      notwNull: false
     },
 
     hora: {
-      type: type.DATE(4),
-      allowNull: false
+      type: type.DATE(),
+      notwNull: false
     },
 
     cantidad: {
@@ -50,14 +50,14 @@ module.exports = (sequelize, type) => {
       defaultValue: "Nuevo"
       
     },
-    direccionEnvio: {
-      type: type.STRING,
-      notNull: false,
-      references: {
-        model: 'usuario',
-        key: 'direccion_envio'
-      }
-    }
+    // direccionEnvio: {
+    //   type: type.STRING,
+    //   notNull: true,
+    //   references: {
+    //     model: 'usuarios',
+    //     key: 'direccion_envio'
+    //   }
+    // }
   });
 };
 

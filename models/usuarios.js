@@ -21,7 +21,7 @@ module.exports = (sequelize, type) => {
       unique: true,
     },
     tel: {
-      type: type.INTEGER,
+      type: type.STRING,
       notNull: true,
     },
     direccion_envio: {
@@ -31,12 +31,12 @@ module.exports = (sequelize, type) => {
     contraseña: {
       type: type.STRING,
       notNull: true,
-      isAlphanumeric: true,
+      
     },
     esAdministrador: {
       type: type.BOOLEAN,
       notNull: true,
-      defaultValue: true
+      defaultValue: false
       
     },
   });

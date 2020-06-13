@@ -17,6 +17,15 @@ const Usuario = usuariosModelo(sequelize, Sequelize);
 const Plato = platoModelo(sequelize, Sequelize);
 const Pedido = pedidoModelo(sequelize, Sequelize);
 
+Plato.hasMany(Pedido);
+Usuario.hasMany(Pedido); 
+//A.belongsToMany(B, { through: 'C' })
+// Usuario.belongsToMany(Plato , { through : 'Pedidos'})
+// Plato.belongsToMany(Usuario , { through : 'Pedidos'})
+// Pedidos.find 
+//          incluyendo : 
+//                  {  'Usuario' , atributos : 'direccion_envio }
+// id .....  direccion_envio
 
 const crearPlatos = () => {
   const plato = Plato.findOne({
@@ -57,7 +66,8 @@ const createAdmin = () => {
           tel: "351000000",
           direccion_envio: "ninguna",
           contraseña: "Admin:123",
-          // esAdministrador: true,
+          esAdministrador: true 
+          
         })
           .then(() => console.log("Usuario creado exitosamente"))
           .catch(() => console.log("Error en el servidor"));
@@ -69,9 +79,9 @@ const createAdmin = () => {
 };
 
 
-Usuario.hasMany(Pedido);
-Plato.hasMany(Pedido);
 
+// Pedido.hasOne(Usuario)
+// Pedido.hasOne(Plato)
 
 sequelize
   .sync({ force: false })
