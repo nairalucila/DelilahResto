@@ -37,3 +37,27 @@ app.get("/", (req, res) => {
     .catch((err) => {
       console.log("Error al traer el usuario", err);
     });
+
+
+
+  //crear entrada en tabla
+  // db.Usuario.create({
+  //   username: 'ruperta',
+  //   fullname: "rupertao garcia",
+  //   email: "fulanescrrrrro@gmail.com",
+  //   telefono: '351555823158',
+  //   direccion_envio: "8 de mayo 123",
+  //   contraseña: "fulanesco123"
+
+  // }).then(()=>{
+  //   console.log('creado el fulano');
+  // })
+  // .catch(()=>{
+  //   console.log('error');
+
+  // })
+
+
+//});
+
+//esto anda bien

@@ -4,8 +4,7 @@ const Sequelize = require("sequelize");
 const usuariosModelo = require("./models/usuarios");
 const platoModelo = require("./models/platos");
 const pedidoModelo = require("./models/pedidos");
-
-
+const platos = require("./models/platos");
 
 const sequelize = new Sequelize("Q2gfbSmPW3", "Q2gfbSmPW3", "C8eE5Isasu", {
   host: "remotemysql.com",
@@ -18,38 +17,42 @@ const Plato = platoModelo(sequelize, Sequelize);
 const Pedido = pedidoModelo(sequelize, Sequelize);
 
 Plato.hasMany(Pedido);
-Usuario.hasMany(Pedido); 
+Pedido.belongsTo(Plato);
+Usuario.hasMany(Pedido);
+Pedido.belongsTo(Usuario);
+
 //A.belongsToMany(B, { through: 'C' })
 // Usuario.belongsToMany(Plato , { through : 'Pedidos'})
 // Plato.belongsToMany(Usuario , { through : 'Pedidos'})
-// Pedidos.find 
-//          incluyendo : 
+// Pedidos.find
+//          incluyendo :
 //                  {  'Usuario' , atributos : 'direccion_envio }
 // id .....  direccion_envio
 
 const crearPlatos = () => {
-  const plato = Plato.findOne({
+  console.log("crear plato --");
+  Plato.findOne({
     where: {
       id: 1,
     },
   })
-  
- if(!plato){
-  Plato.create({
-    nombre: "Empanadas",
-    fullname: "Admin",
-    descripcion: "árabes",
-    precio: "210"
-    
-  })
+    .then((plato) => {
+      if (!plato) {
+        Plato.create({
+          nombre: "Empanadas",
+          fullname: "Admin",
+          descripcion: "árabes",
+          precio: "210",
+        })
 
-    .then(() => console.log("Plato creado exitosamente"))
-    .catch((errorPlato) => console.log(errorPlato, "Error al crear su Plato"));
-
+          .then(() => console.log("Plato creado exitosamente"))
+          .catch((errorPlato) =>
+            console.log(errorPlato, "Error al crear su Plato")
+          );
+      }
+    })
+    .catch((err) => console.log("Error al buscar plato --->", err));
 };
-}
-//crearPlatos();
-
 
 const createAdmin = () => {
   const admin = Usuario.findOne({
@@ -66,8 +69,7 @@ const createAdmin = () => {
           tel: "351000000",
           direccion_envio: "ninguna",
           contraseña: "Admin:123",
-          esAdministrador: true 
-          
+          esAdministrador: true,
         })
           .then(() => console.log("Usuario creado exitosamente"))
           .catch(() => console.log("Error en el servidor"));
@@ -78,10 +80,31 @@ const createAdmin = () => {
     });
 };
 
-
-
 // Pedido.hasOne(Usuario)
 // Pedido.hasOne(Plato)
+
+// test buscar
+
+const buscarPedidos = () => {
+  Pedido.findAll({
+    include: [
+      {
+        model: Plato,
+        required: true,
+        attributes: ['descripcion']
+      },
+      {
+        model: Usuario,
+        required: true,
+        attributes: ['direccion_envio']
+      },
+    ],
+  })
+    .then((res) =>
+      console.log("Resultado bolo --->", JSON.stringify(res, null, 2))
+    )
+    .catch((err) => console.error("Error al buscar pedidos ", err));
+};
 
 sequelize
   .sync({ force: false })
@@ -101,5 +124,7 @@ sequelize
   });
 
 createAdmin();
+crearPlatos();
+//buscarPedidos();
 
 module.exports = { Usuario, Plato, Pedido }; //exporte tabla usuario
