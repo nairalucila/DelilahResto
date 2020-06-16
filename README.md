@@ -6,6 +6,10 @@ npm install express  o npm i express
 cualquiera de las dos formas es válidad.
 Instale todas las librerias
 
+instalar moment
+npm install moment --save
+npm install --save express-validator
+
 
 ENDOPOINTS
 
@@ -21,7 +25,8 @@ ENDOPOINTS
 /:platosid  -->elimina platos por id  --ok
 /actualizar --> actualizar platos --falta
 
-/carrito --> crea un pedido nuevo
+/carrito --> crea un pedido nuevo  --OK - falla la fecha y hora
+
 
 
 

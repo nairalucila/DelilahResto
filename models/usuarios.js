@@ -8,7 +8,7 @@ module.exports = (sequelize, type) => {
     },
     nombreUsuario: {
       type: type.STRING,
-      notNull: true,
+      allowNull: false,
     },
     nombreCompleto: {
       type: type.STRING,

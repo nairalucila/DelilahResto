@@ -27,7 +27,10 @@ module.exports = (sequelize, type) => {
 
     fecha: {
       type: type.DATE(),
-      notwNull: false
+      notwNull: false,
+      get() {
+        return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY');
+      }
     },
 
     hora: {
