@@ -1,5 +1,8 @@
 const Sequelize = require("sequelize");
 
+const bcrypt = require("bcryptjs");
+
+
 //Importé la tabla usuario
 const usuariosModelo = require("./models/usuarios");
 const platoModelo = require("./models/platos");
@@ -55,6 +58,11 @@ const crearPlatos = () => {
 };
 
 const createAdmin = () => {
+
+
+  const hashContraseña =  bcrypt.hashSync("Admin:123", 5);
+  
+
   const admin = Usuario.findOne({
     where: {
       email: "admin@gmail.com",
@@ -68,7 +76,7 @@ const createAdmin = () => {
           email: "admin@gmail.com",
           tel: "351000000",
           direccion_envio: "ninguna",
-          contraseña: "Admin:123",
+          contraseña: hashContraseña,
           esAdministrador: true,
         })
           .then(() => console.log("Usuario creado exitosamente"))

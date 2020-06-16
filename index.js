@@ -23,15 +23,15 @@ app.post("/", (req, res) => {
 });
 
 const checkToken = (req, res, next) => {
-  const token = req.headers["authorization"];
+  const token = req.headers.authorization;
 
   if (typeof token !== "undefined") {
-
     jwt.verify(token, secreto, (err, authorizedData) => {
       if (err) {
         console.log(err, "SUPER ERROR ACÁ");
         res.sendStatus(403);
       } else {
+        req.usuario = authorizedData;
         next();
       }
     });
@@ -40,17 +40,37 @@ const checkToken = (req, res, next) => {
   }
 };
 
+const esAdmin = (req, res, next) => {
+  console.log("req -->", req.usuario);
+
+  Usuario.findOne({
+    where: { email: req.usuario.email },
+  })
+    .then((usuarioDB) => {
+      if (usuarioDB.esAdministrador) {
+        next();
+      } else {
+        res.json("No autorizado, debe ser administrador").status(500);
+      }
+    })
+    .catch((err) => res.send("Error en el servidor"));
+};
+
 //RUTAS USUARIOS
 
-app.get("/usuarios", checkToken, async (req, res) => {
+app.get("/usuarios", checkToken, esAdmin, async (req, res) => {
+  
   jwt.verify(req.token, secreto, (err, authorizedData) => {
+  
     if (err) {
-      console.log(errr, "SUPER ERROR ACÁ");
+      console.log(err, "SUPER ERROR ACÁ");
       res.sendStatus(403);
+      
     } else {
       res.json({
         message: "Exitoso login",
         authorizedData,
+      
       });
       console.log("EXITO, conectado");
     }
@@ -71,10 +91,10 @@ app.get("/usuarios", checkToken, async (req, res) => {
   }
 });
 
-app.get("/usuarios/:id",checkToken,  async (req, res) => {
+app.get("/usuarios/:id", checkToken, esAdmin, async (req, res) => {
   const usuario = await Usuario.findOne({ where: { id: req.params.id } });
   if (usuario === null) {
-    res.json({ success: "not found" });
+    res.json({ success: "True ", usuario });
     console.log("Not found!");
   } else {
     res.json({ success: "oookkk", data: usuario });
@@ -120,7 +140,6 @@ app.post("/login", (req, res) => {
   const { body } = req;
   const { email } = body;
   const { contraseña } = body;
-
   // buscar ese usuario en la base de datos
   Usuario.findOne({
     where: { email: email },
@@ -132,41 +151,40 @@ app.post("/login", (req, res) => {
           // result == true
           if (err) {
             return res.json({ err });
-          }
+          } 
 
+          console.log("result--->", result);
           if (result) {
             jwt.sign({ email }, secreto, (err, token) => {
               if (err) {
-                console.log("ERROR EN SIGN", err);
 
                 return res.json({ err });
               }
 
+
               return res.send(token);
             });
+          } else {
+            return res.send("Contraseña incorrecta");
           }
         });
       } else {
         return res.json("otro error más").status(403);
       }
     })
-    .catch((errorsito) => {
-      return res.status(500).send(errorsito);
+    .catch((error) => {
+      return res.status(500).send(error);
     });
-  // si no exuste el usuario error
-
-  // si la contraseña no coincide error
-  // return res.status(400).send("Error");
-  // si hay un error al buscar usuario error en base de datos
+  
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-app.delete("/eliminarregistro/:id", async (req, res) => {
+app.delete("/eliminarregistro/:id", checkToken, esAdmin, async (req, res) => {
   await db.Usuario.destroy({
     where: { id: req.params.id },
   });
-  res.json({ success: "Usuario borado" });
+  res.json({ success: "Usuario borrado" });
 });
 
 //////// PLATOS
@@ -178,7 +196,7 @@ app.get("/explorador", checkToken, async (req, res) => {
   res.json(platos);
 });
 
-app.post("/crearplatos", (req, res) => {
+app.post("/crearplatos", checkToken, esAdmin, (req, res) => {
   const plato = req.body;
   if (!plato) {
     return res.status(400).send("Bad request");
@@ -189,7 +207,8 @@ app.post("/crearplatos", (req, res) => {
     .catch(() => res.status(500).send("Error al crear plato"));
 });
 
-app.delete("/eliminarplatos/:id", async (req, res) => {
+
+app.delete("/eliminarplatos/:id", checkToken, esAdmin, async (req, res) => {
   await Plato.destroy({
     where: { id: req.params.id },
   });
@@ -199,7 +218,7 @@ app.delete("/eliminarplatos/:id", async (req, res) => {
 
 ///////////////////// PEDIDOS
 
-app.post("/carrito", (req, res) => {
+app.post("/carrito", checkToken, (req, res) => {
   const newPedido = req.body;
   if (!newPedido) {
     return res.status(400).send("Bad request");
