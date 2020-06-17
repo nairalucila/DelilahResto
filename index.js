@@ -13,14 +13,13 @@ const { Usuario } = require("./db");
 const { Pedido } = require("./db");
 const platos = require("./models/platos");
 const moment = require("moment");
+const controladores = require('./controllers/autorizacion/login');
+
+const rutasAut = require("./routes/auth");
 
 //CONFIGURACION
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.post("/", (req, res) => {
-  res.json(req.body);
-});
 
 const checkToken = (req, res, next) => {
   const token = req.headers.authorization;
@@ -59,24 +58,6 @@ const esAdmin = (req, res, next) => {
 //RUTAS USUARIOS
 
 app.get("/usuarios", checkToken, esAdmin, async (req, res) => {
-  
-  jwt.verify(req.token, secreto, (err, authorizedData) => {
-  
-    if (err) {
-      console.log(err, "SUPER ERROR ACÁ");
-      res.sendStatus(403);
-      
-    } else {
-      res.json({
-        message: "Exitoso login",
-        authorizedData,
-      
-      });
-      console.log("EXITO, conectado");
-    }
-  });
-
-  //////////
   try {
     const usuarios = await Usuario.findAll({
       where: {
@@ -101,85 +82,6 @@ app.get("/usuarios/:id", checkToken, esAdmin, async (req, res) => {
   }
 });
 
-app.post(
-  "/registro",
-  [
-    check("contraseña", " Tiiooooo La contraseña es obligatoria")
-      .not()
-      .isEmpty(),
-    check("email", "El email es obligatorio").not().isEmpty(),
-  ],
-  (req, res) => {
-    //veeeer si sirve
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errores: errors.array() });
-    }
-
-    req.body.contraseña = bcrypt.hashSync(req.body.contraseña, 5);
-
-    const newUser = req.body;
-
-    if (!newUser) {
-      res.status(400).send("Bad request");
-    }
-    db.Usuario.create(newUser)
-      .then(() => res.status(200).send("Usuario creado exitosamente"))
-      .catch((err) =>
-        res.status(500).json({
-          errors: {
-            mensaje: err.errors[0].message,
-            campo: err.fields,
-          },
-        })
-      );
-  }
-);
-
-app.post("/login", (req, res) => {
-  const { body } = req;
-  const { email } = body;
-  const { contraseña } = body;
-  // buscar ese usuario en la base de datos
-  Usuario.findOne({
-    where: { email: email },
-  })
-    // si el usuario existe desencriptar la contraseña y compararla con la q manda
-    .then((usuarioDB) => {
-      if (usuarioDB) {
-        bcrypt.compare(contraseña, usuarioDB.contraseña, (err, result) => {
-          // result == true
-          if (err) {
-            return res.json({ err });
-          } 
-
-          console.log("result--->", result);
-          if (result) {
-            jwt.sign({ email }, secreto, (err, token) => {
-              if (err) {
-
-                return res.json({ err });
-              }
-
-
-              return res.send(token);
-            });
-          } else {
-            return res.send("Contraseña incorrecta");
-          }
-        });
-      } else {
-        return res.json("otro error más").status(403);
-      }
-    })
-    .catch((error) => {
-      return res.status(500).send(error);
-    });
-  
-});
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 app.delete("/eliminarregistro/:id", checkToken, esAdmin, async (req, res) => {
   await db.Usuario.destroy({
     where: { id: req.params.id },
@@ -187,16 +89,40 @@ app.delete("/eliminarregistro/:id", checkToken, esAdmin, async (req, res) => {
   res.json({ success: "Usuario borrado" });
 });
 
+app.put('/actualizarusuario/:id', checkToken, esAdmin, async (req,res)=>{
+  const updateid = req.params.id;
+    Usuario.update(
+      {  
+      nombreUsuario: req.body.nombreUsuario,
+      nombreCompleto: req.body.nombreCompleto,
+      tel: req.body.tel,
+      direccion_envio: req.body.direccion_envio,
+      contraseña: req.body.contraseña
+     }, {where: {id:req.params.id}}
+             ).then(() => {
+             res.status(200).send("Usuario actualizado con éxito");
+             });
+})
+
+
+app.use("/", rutasAut);
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 //////// PLATOS
 
-app.get("/explorador", checkToken, async (req, res) => {
+app.get("/platos", checkToken, async (req, res) => {
   const platos = await Plato.findAll({
     attributes: { exclude: ["createdAt", "updatedAt"] },
   });
   res.json(platos);
 });
 
-app.post("/crearplatos", checkToken, esAdmin, (req, res) => {
+app.post("/crearplato", checkToken, esAdmin, (req, res) => {
   const plato = req.body;
   if (!plato) {
     return res.status(400).send("Bad request");
@@ -207,8 +133,7 @@ app.post("/crearplatos", checkToken, esAdmin, (req, res) => {
     .catch(() => res.status(500).send("Error al crear plato"));
 });
 
-
-app.delete("/eliminarplatos/:id", checkToken, esAdmin, async (req, res) => {
+app.delete("/eliminarplato/:id", checkToken, esAdmin, async (req, res) => {
   await Plato.destroy({
     where: { id: req.params.id },
   });
@@ -216,9 +141,23 @@ app.delete("/eliminarplatos/:id", checkToken, esAdmin, async (req, res) => {
   res.json({ success: "Plato eliminado exitosamente" });
 });
 
+app.put('/actualizarplato/:id', checkToken, esAdmin, async (req,res)=>{
+  const updateid = req.params.id;
+    Plato.update(
+      {  
+      nombre: req.body.nombre,
+      descripcion: req.body.descripcion,
+      precio: req.body.precio,
+      
+     }, {where: {id:req.params.id}}
+             ).then(() => {
+             res.status(200).send("Plato actualizado con éxito");
+             });
+})
+
 ///////////////////// PEDIDOS
 
-app.post("/carrito", checkToken, (req, res) => {
+app.post("/crearpedidos", checkToken, (req, res) => {
   const newPedido = req.body;
   if (!newPedido) {
     return res.status(400).send("Bad request");
@@ -228,11 +167,6 @@ app.post("/carrito", checkToken, (req, res) => {
     .then(() => res.send("PEDIDO creado exitosamente"))
     .catch((err) => res.status(500).send(err, "Error al crear su pedido"));
 });
-
-// app.get('')
-
-// traeme los platos para q use en la tabla , /platos-tabla , funcion con la consulta
-// que traiga
 
 //SERVIDOR
 

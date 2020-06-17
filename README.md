@@ -39,7 +39,7 @@ Para crear un usuario utilizar esta plantilla de json
     "tel": 3572520602,
     "direccion_envio": "27deabril 625",
     "contraseña": "388contraseña"
-    "esAdministrador": false
+    
 }
 
 Para crear un plato utilice esta plantilla
