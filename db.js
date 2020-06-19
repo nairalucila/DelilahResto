@@ -1,9 +1,7 @@
 const Sequelize = require("sequelize");
-
 const bcrypt = require("bcryptjs");
 
-
-//Importé la tabla usuario
+//Importar la tabla usuario
 const usuariosModelo = require("./models/usuarios");
 const platoModelo = require("./models/platos");
 const pedidoModelo = require("./models/pedidos");
@@ -14,7 +12,7 @@ const sequelize = new Sequelize("Q2gfbSmPW3", "Q2gfbSmPW3", "C8eE5Isasu", {
   dialect: "mysql",
 });
 
-//Aca nose que que hice pero se tiene que hacerse
+//Aca nose que que hice pero tiene que hacerse
 const Usuario = usuariosModelo(sequelize, Sequelize);
 const Plato = platoModelo(sequelize, Sequelize);
 const Pedido = pedidoModelo(sequelize, Sequelize);
@@ -24,13 +22,7 @@ Pedido.belongsTo(Plato);
 Usuario.hasMany(Pedido);
 Pedido.belongsTo(Usuario);
 
-//A.belongsToMany(B, { through: 'C' })
-// Usuario.belongsToMany(Plato , { through : 'Pedidos'})
-// Plato.belongsToMany(Usuario , { through : 'Pedidos'})
-// Pedidos.find
-//          incluyendo :
-//                  {  'Usuario' , atributos : 'direccion_envio }
-// id .....  direccion_envio
+
 
 const crearPlatos = () => {
   console.log("crear plato --");
@@ -58,10 +50,7 @@ const crearPlatos = () => {
 };
 
 const createAdmin = () => {
-
-
-  const hashContraseña =  bcrypt.hashSync("Admin:123", 5);
-  
+  const hashContraseña = bcrypt.hashSync("Admin:123", 5);
 
   const admin = Usuario.findOne({
     where: {
@@ -88,28 +77,23 @@ const createAdmin = () => {
     });
 };
 
-// Pedido.hasOne(Usuario)
-// Pedido.hasOne(Plato)
-
-// test buscar
-
 const buscarPedidos = () => {
   Pedido.findAll({
     include: [
       {
         model: Plato,
         required: true,
-        attributes: ['descripcion']
+        attributes: ["descripcion"],
       },
       {
         model: Usuario,
         required: true,
-        attributes: ['direccion_envio']
+        attributes: ["direccion_envio"],
       },
     ],
   })
     .then((res) =>
-      console.log("Resultado bolo --->", JSON.stringify(res, null, 2))
+      console.log("Resultado --->", JSON.stringify(res, null, 2))
     )
     .catch((err) => console.error("Error al buscar pedidos ", err));
 };
@@ -133,6 +117,6 @@ sequelize
 
 createAdmin();
 crearPlatos();
-//buscarPedidos();
 
-module.exports = { Usuario, Plato, Pedido }; //exporte tabla usuario
+
+module.exports = { Usuario, Plato, Pedido}; //exporte tabla usuario

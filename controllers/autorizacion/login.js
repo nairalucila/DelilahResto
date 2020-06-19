@@ -9,35 +9,36 @@ const controladorLogin = (req, res) => {
     const { email } = body;
     const { contraseña } = body;
     // buscar ese usuario en la base de datos
+
     Usuario.findOne({
       where: { email: email },
     })
-      // si el usuario existe desencriptar la contraseña y compararla con la q manda
-      .then((usuarioDB) => {
-        if (usuarioDB) {
-          bcrypt.compare(contraseña, usuarioDB.contraseña, (err, result) => {
-            // result == true
-            if (err) {
-              return res.json({ err });
-            }
-            
-            if (result) {
-              jwt.sign({ email }, secreto, (err, token) => {
-                if (err) {
-                  return res.json({ err });
-                }
-  
-                return res.send(token);
-              });
-            } else {
-              return res.send("Contraseña incorrecta");
-            }
-          });
-        } else {
-          return res.json("otro error más").status(403);
-        }
-      })
-      .catch((error) => {
+    // si el usuario existe desencriptar la contraseña y compararla con la q manda
+    .then((usuarioDB) => {
+      if (usuarioDB) {
+        bcrypt.compare(contraseña, usuarioDB.contraseña, (err, result) => {
+          // result == true
+          if (err) {
+            return res.json({ err });
+          }
+          
+          if (result) {
+            jwt.sign({ email }, secreto, (err, token) => {
+              if (err) {
+                return res.json({ err });
+              }
+              
+              return res.send(token);
+            });
+          } else {
+            return res.send("Contraseña incorrecta");
+          }
+        });
+      } else {
+        return res.json("otro error más").status(403);
+      }
+    })
+    .catch((error) => {
         return res.status(500).send(error);
       });
   }
