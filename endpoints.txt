@@ -127,3 +127,44 @@ app.get("/", (req, res) => {
 
 
 Order.create({ status: "Pending", price: 300, pay_method: "cash", userId: 2, productId: 1, }), 
+
+/A.belongsToMany(B, { through: 'C' })
+// Usuario.belongsToMany(Plato , { through : 'Pedidos'})
+// Plato.belongsToMany(Usuario , { through : 'Pedidos'})
+// Pedidos.find
+//          incluyendo :
+//                  {  'Usuario' , atributos : 'direccion_envio }
+// id .....  direccion_envio
+/**
+
+
+/////////////////////// get Pedidos
+let usuario;
+  //let administrador;
+
+  const administrador = Usuario.findOne({
+    where: {
+      email: "admin@gmail.com",
+    },
+  });
+  if (administrador) {
+    Pedido.findAll({
+      include: [
+        {
+          model: Plato,
+          required: true,
+        },
+        {
+          model: Usuario,
+          required: true,
+        },
+      ],
+    })
+
+      .then((prom) => {
+        res.status(200).json(prom, "Autorizado, traemos todos los pedidos")
+      })
+      .catch((error) => {error });
+  } else {
+    res.status(404).json("ÑAÑAÑAÑAÑÑA");
+  }

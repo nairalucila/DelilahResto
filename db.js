@@ -34,9 +34,8 @@ const crearPlatos = () => {
     .then((plato) => {
       if (!plato) {
         Plato.create({
-          nombre: "Empanadas",
-          fullname: "Admin",
-          descripcion: "árabes",
+          nombre: "Empanadas Árabes",
+          descripcion: "carne picada, cebolla, morrón",
           precio: "210",
         })
 

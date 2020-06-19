@@ -33,20 +33,33 @@ ENDOPOINTS
 Para crear un usuario utilizar esta plantilla de json
 
 {
-	"nombreUsuario": "naira",
-    "nombreCompleto": "naira coppari",
-    "email": "nairacop@gmail.com",
-    "tel": 3572520602,
-    "direccion_envio": "27deabril 625",
-    "contraseña": "388contraseña"
+	"nombreUsuario": "example",
+    "nombreCompleto": "exampel completo",
+    "email": "exampel@gmail.com",
+    "tel": 3512525025,
+    "direccion_envio": "San Martin 255",
+    "contraseña": "255contraseña"
     
 }
 
-Para crear un plato utilice esta plantilla
+Para modificar un usuario / id
+{
+    
+	"nombreUsuario": "example",
+    "nombreCompleto": "exampel completo",
+    "email": "exampel@gmail.com",
+    "tel": 3512525025,
+    "direccion_envio": "San Martin 255",
+    "contraseña": "255contraseña"
 
- nombre: "pizza super especial",
-    descripcion: "salsa, muzza, jamon, huevo",
-    precio: "290"
+}
+
+Para crear un plato utilice esta plantilla
+    {
+    "nombre": "pizza super especial",
+    "descripcion": "salsa, muzza, jamon, huevo",
+    "precio": "290"
+    }
 
 Para crear un pedido utilizar esta plantilla de json
 
@@ -59,4 +72,12 @@ Para crear un pedido utilizar esta plantilla de json
     "estado": "nuevo"
     
     
+      }
+
+      para logear un usuario
+
+      {
+          "email": "example@gmail.com",
+          "contraseña": "examplecontraseña"
+
       }
