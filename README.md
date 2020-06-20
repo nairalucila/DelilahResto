@@ -1,15 +1,27 @@
 # DelilahResto
-Crear archivo, ir a la carpeta del mismo e inicializarlo con el ccomando	
-npm init
-Luego instalar librerias a usar con
-npm install express  o npm i express 
-cualquiera de las dos formas es válidad.
-Instale todas las librerias
+
+## Comenzando
+Lo primero que ud. debe hacer es instalar Node Js. en su sistema local. Esto se hace por medio de la consola.
+
+### Si esta en Linux o Mac
+### Si está en Windows
+
+
+## Iniciar programa 
+Este programa se entrega con todas las dependencias agregadas en el archivo package json. Pero ud. deberá instalarlas. en su entorno local.
+Instale a continuación por medio de la consola de su sistema operativo, con el siguiente comando:
+
+### Si está en Linux o Mac:
+	npm start
+### Si esta en Windows:
+	averiguar
 
 instalar moment
 npm install moment --save
 npm install --save express-validator
 
+## Lo que se entrega
+En este proyecto se entrega un conjunto de archivos en donde figuran los archivos js, Readme, 
 
 ENDOPOINTS
 
