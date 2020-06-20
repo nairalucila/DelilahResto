@@ -26,12 +26,12 @@ module.exports = (sequelize, type) => {
     },
 
     fecha: {
-      type: type.DATE(),
+      type: type.DATE,
       notwNull: true
     },
 
     hora: {
-      type: type.DATE(),
+      type: type.TIME,
       notwNull: false
     },
 

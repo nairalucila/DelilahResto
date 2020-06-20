@@ -152,7 +152,6 @@ app.put("/platos/:id", checkToken, esAdmin, async (req, res) => {
 ///////////////////// PEDIDOS
 
 app.get("/pedidos", checkToken, async (req, res) => {
-  
   const usuarioDB = await Usuario.findOne({
     where: { email: req.usuario.email },
   });
@@ -167,63 +166,60 @@ app.get("/pedidos", checkToken, async (req, res) => {
       ],
     });
     res.json(traertodo);
-
-    
   } else {
-
     const traerotravez = await Pedido.findAll({
-      where: {usuarioId: usuarioDB.id}
-    })
-    console.log(traerotravez, '<----- RES')
+      where: { usuarioId: usuarioDB.id },
+    });
+    console.log(traerotravez, "<----- RES");
     res.json(traerotravez);
 
     //buscas pedidos donde id relacionado  a usuaros en tabla pedidos = a usuarioDB.id
-    
   }
-}); 
+});
 
 app.post("/pedidos", checkToken, (req, res) => {
   const newPedido = req.body;
+
   if (!newPedido) {
     return res.status(400).send("Bad request");
   }
 
+  newPedido.fecha = new Date().toLocaleDateString("es-AR");
+  newPedido.hora = new Date().getHours() + ":" + new Date().getMinutes();
+
   db.Pedido.create(newPedido)
+
     .then(() => res.send("Pedido CREADO exitosamente"))
     .catch((err) => res.status(500).send(err, "Error al crear su pedido"));
 });
 
-app.delete("/pedidos/:id", checkToken, esAdmin, async (req, res)=>{
-  
+app.delete("/pedidos/:id", checkToken, esAdmin, async (req, res) => {
   await Pedido.destroy({
     where: { id: req.params.id },
-  })
-  
-    res.json({ success: "Pedido ELIMINADO exitosamente" });
+  });
 
-})
+  res.json({ success: "Pedido ELIMINADO exitosamente" });
+});
 
-app.put("/pedidos/:id", checkToken, esAdmin, (req, res)=>{
-
+app.put("/pedidos/:id", checkToken, esAdmin, (req, res) => {
   const updateid = req.params.id;
-  
+
   Pedido.update(
-    { 
+    {
       usuarioId: req.body.usuarioId,
       platoId: req.body.platoId,
       // fecha: req.body.DATE(),
       // hora: req.body.DATE(),
       cantidad: req.body.cantidad,
       total: req.body.total,
-      estado: req.body.estado
+      estado: req.body.estado,
     },
 
-    { where: { id: req.params.id }
-  })
-  
+    { where: { id: req.params.id } }
+  )
   .then(() => {
-    res.status(200).send("Pedido ACTUALIZADO con éxito")
-})
+    res.status(200).send("Pedido ACTUALIZADO con éxito");
+  });
 });
 //SERVIDOR
 
