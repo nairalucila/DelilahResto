@@ -4,7 +4,12 @@
 Lo primero que ud. debe hacer es instalar Node Js. en su sistema local. Esto se hace por medio de la consola.
 
 ### Si esta en Linux o Mac
+Desde la consola, introducir el siguiente comando:
+
+	- sudo apt-get install -y nodejs
+	
 ### Si está en Windows
+Ingrese al sitio oficial de NodeJs y descargue e instale manualmente.
 
  
 ### Lista de librerías que se requieren
@@ -31,7 +36,7 @@ En este proyecto ud. encontrará los siguientes archivos:
 	- archivos js. incluyendo, package.json y package-lock.json
 	- archivo sql con querys de la base de datos.
 	- archivo Readme.md
-	- archivo YMEL cn Documentaciónd. 
+	- archivo YAML con Documentación. 
 
 ## Endpoints
 A continuación Ud. podrá probar las rutas en las que podrá hacer peticiones por medio de Postman o de cualquier otra herramienta similar.
@@ -40,7 +45,7 @@ A continuación Ud. podrá probar las rutas en las que podrá hacer peticiones p
 La Base de datos cuenta con 3 modelos de tabla; la tabala Usuarios, Platos y Pedidos. Estas son relacionales, especialmente en la tabla Pedidos que es en donde se almacena el Id del usuario que hace el pedido, con el Id del plato que pidió.
 
 ### Endpoints
-En postman ingrese, las siguientes rutas para hacer peticiones a la base de datos.
+En Postman ingrese, las siguientes rutas para hacer peticiones a la base de datos.
 
 #### Rutas de registro e inicio de sesión:
 	
