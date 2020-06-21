@@ -16,6 +16,30 @@ const controladores = require("./controllers/autorizacion/login");
 
 const rutasAut = require("./routes/auth");
 
+///////////////////////////
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      version: "1.0.0",
+      title: "Customer API",
+      description: "Customer API Information",
+      contact: {
+        name: "Amazing Developer"
+      },
+      servers: ["http://localhost:3000"]
+    }
+  },
+  // ['.routes/*.js']
+  apis: ["index.js"]
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+
 //CONFIGURACION
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -105,7 +129,6 @@ app.put("/usuarios/:id", checkToken, esAdmin, async (req, res) => {
 });
 
 app.use("/", rutasAut);
-/////////////////////////////////////////////////////////////////////////////////////////////
 
 //////// PLATOS
 
@@ -170,10 +193,7 @@ app.get("/pedidos", checkToken, async (req, res) => {
     const traerotravez = await Pedido.findAll({
       where: { usuarioId: usuarioDB.id },
     });
-    console.log(traerotravez, "<----- RES");
     res.json(traerotravez);
-
-    //buscas pedidos donde id relacionado  a usuaros en tabla pedidos = a usuarioDB.id
   }
 });
 
@@ -216,8 +236,7 @@ app.put("/pedidos/:id", checkToken, esAdmin, (req, res) => {
     },
 
     { where: { id: req.params.id } }
-  )
-  .then(() => {
+  ).then(() => {
     res.status(200).send("Pedido ACTUALIZADO con éxito");
   });
 });
