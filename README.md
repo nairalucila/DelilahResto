@@ -145,6 +145,10 @@ Para obtener inforación, modificar o eliminar un Usuario, Plato o Pedido según
 	
 	Example:
 		localhost:3000/usuarios/25  =  localhost:3000/usuarios/id
+
+### Para ver documentación de las rutas, ingrese en este link
+	
+	[Esta documentación de adjunta en la carpeta de archivos entregados en este proyecto en formato .yaml](https://app.swaggerhub.com/apis-docs/nairalucila/Delilah-Resto/1.0.0#/)
       
       
      
