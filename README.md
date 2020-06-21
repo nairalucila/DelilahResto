@@ -6,24 +6,47 @@ Lo primero que ud. debe hacer es instalar Node Js. en su sistema local. Esto se 
 ### Si esta en Linux o Mac
 ### Si está en Windows
 
+ 
+### Lista de librerías que se requieren
+	- npm i bcrypt
+    	- npm i body-parser
+    	- npm i express
+    	- npm i express-validator
+    	- npm i jsonwebtoken
+    	- npm i moment
+    	- npm i mysql
+    	- npm i sequelize
+	- npm i nodemon
+    
+Este programa se entrega con todas las dependencias agregadas en el archivo package json. Pero ud. deberá instalarlas en su entorno local en caso de no tenerlas. El comando de instalación es **npm i lib** o **npm install lib**
 
-## Iniciar programa 
-Este programa se entrega con todas las dependencias agregadas en el archivo package json. Pero ud. deberá instalarlas. en su entorno local.
-Instale a continuación por medio de la consola de su sistema operativo, con el siguiente comando:
-
-### Si está en Linux o Mac:
+## Iniciar programa
+Para iniciar el servidor, ejecute en la consola el siguiente comando, deberá ver en la misma un mensaje como el siguiente: "Servidor Funcionando".
+	
 	npm start
-### Si esta en Windows:
-	averiguar
+	
+## Lo que Ud. podrá encontrar
+En este proyecto ud. encontrará los siguientes archivos:
 
-instalar moment
-npm install moment --save
-npm install --save express-validator
+	- archivos js. incluyendo, package.json y package-lock.json
+	- archivo sql con querys de la base de datos.
+	- archivo Readme.md
+	- archivo YMEL cn Documentaciónd. 
 
-## Lo que se entrega
-En este proyecto se entrega un conjunto de archivos en donde figuran los archivos js, Readme, 
+### Endpoints
+A continuación Ud. podrá probar las rutas en las que podrá hacer peticiones por medio de Postman o de cualquier otra herramienta similar.
 
-ENDOPOINTS
+## Base de Datos
+La Base de datos cuenta con 3 modelos de tabla; la tabala Usuarios, Platos y Pedidos. Estas son relacionales, especialmente en la tabla Pedidos que es en donde se almacena el Id del usuario que hace el pedido, con el Id del plato que pidió.
+
+### Endpoints
+En postman ingrese, las siguientes rutas para hacer peticiones a la base de datos.
+
+#### Rutas de registro e inicio de sesión:
+	
+	- post:/registro
+	- post:/login
+	
 
 /registro --> crea nuevo usuario  -ok
 /eliminarregistro/:id --> borrar usuario -- ok
