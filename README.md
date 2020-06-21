@@ -148,7 +148,7 @@ Para obtener inforación, modificar o eliminar un Usuario, Plato o Pedido según
 
 ### Para ver documentación de las rutas, ingrese en este link
 	
-	[Esta documentación de adjunta en la carpeta de archivos entregados en este proyecto en formato .yaml](https://app.swaggerhub.com/apis-docs/nairalucila/Delilah-Resto/1.0.0#/)
+[Esta documentación de adjunta en la carpeta de archivos entregados en este proyecto en formato .yaml](https://app.swaggerhub.com/apis-docs/nairalucila/Delilah-Resto/1.0.0#/) 
       
       
      
