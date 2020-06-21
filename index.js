@@ -2,81 +2,14 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const db = require("./db");
-const jwt = require("jsonwebtoken");
-const secreto = "A2dvWGM46yeAe9G";
-const bcrypt = require("bcryptjs");
-
-const { check, validationResult } = require("express-validator");
-const { Plato } = require("./db");
-const { Usuario } = require("./db");
-const { Pedido } = require("./db");
-const platos = require("./models/platos");
-const moment = require("moment");
-const controladores = require("./controllers/autorizacion/login");
+const { Plato, Usuario , Pedido} = require("./db");
+const { checkToken, esAdmin } = require("./middlewares/auth.middlewares");
 
 const rutasAut = require("./routes/auth");
-
-///////////////////////////
-const swaggerJsDoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
-
-const swaggerOptions = {
-  swaggerDefinition: {
-    info: {
-      version: "1.0.0",
-      title: "Customer API",
-      description: "Customer API Information",
-      contact: {
-        name: "Amazing Developer"
-      },
-      servers: ["http://localhost:3000"]
-    }
-  },
-  // ['.routes/*.js']
-  apis: ["index.js"]
-};
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
 
 //CONFIGURACION
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-const checkToken = (req, res, next) => {
-  const token = req.headers.authorization;
-
-  if (typeof token !== "undefined") {
-    jwt.verify(token, secreto, (err, authorizedData) => {
-      if (err) {
-        console.log(err, "SUPER ERROR ACÁ");
-        res.sendStatus(403);
-      } else {
-        req.usuario = authorizedData;
-        next();
-      }
-    });
-  } else {
-    res.status(403).send("No autorizado");
-  }
-};
-
-const esAdmin = (req, res, next) => {
-  console.log("req -->", req.usuario);
-
-  Usuario.findOne({
-    where: { email: req.usuario.email },
-  })
-    .then((usuarioDB) => {
-      if (usuarioDB.esAdministrador) {
-        next();
-      } else {
-        res.json("No autorizado, debe ser administrador").status(500);
-      }
-    })
-    .catch((err) => res.send("Error en el servidor"));
-};
 
 //RUTAS USUARIOS
 
@@ -99,7 +32,6 @@ app.get("/usuarios/:id", checkToken, esAdmin, async (req, res) => {
   const usuario = await Usuario.findOne({ where: { id: req.params.id } });
   if (usuario === null) {
     res.json({ success: "True ", usuario });
-    console.log("Not found!");
   } else {
     res.json({ success: "OK", data: usuario });
   }
@@ -113,7 +45,6 @@ app.delete("/usuarios/:id", checkToken, esAdmin, async (req, res) => {
 });
 
 app.put("/usuarios/:id", checkToken, esAdmin, async (req, res) => {
-  const updateid = req.params.id;
   Usuario.update(
     {
       nombreUsuario: req.body.nombreUsuario,
@@ -143,6 +74,8 @@ app.post("/platos", checkToken, esAdmin, (req, res) => {
   const plato = req.body;
   if (!plato) {
     return res.status(400).send("Bad request");
+  } else if (!plato.nombre || !plato.descripcion || !plato.precio) {
+    return res.status(400).send("Bad request");
   }
   db.Plato.create(plato)
 
@@ -159,15 +92,9 @@ app.delete("/platos/:id", checkToken, esAdmin, async (req, res) => {
 });
 
 app.put("/platos/:id", checkToken, esAdmin, async (req, res) => {
-  const updateid = req.params.id;
-  Plato.update(
-    {
-      nombre: req.body.nombre,
-      descripcion: req.body.descripcion,
-      precio: req.body.precio,
-    },
-    { where: { id: req.params.id } }
-  ).then(() => {
+  const datosNuevos = req.body;
+
+  Plato.update(datosNuevos, { where: { id: req.params.id } }).then(() => {
     res.status(200).send("Plato ACTUALIZADO con éxito");
   });
 });
@@ -222,23 +149,12 @@ app.delete("/pedidos/:id", checkToken, esAdmin, async (req, res) => {
 });
 
 app.put("/pedidos/:id", checkToken, esAdmin, (req, res) => {
-  const updateid = req.params.id;
-
-  Pedido.update(
-    {
-      usuarioId: req.body.usuarioId,
-      platoId: req.body.platoId,
-      // fecha: req.body.DATE(),
-      // hora: req.body.DATE(),
-      cantidad: req.body.cantidad,
-      total: req.body.total,
-      estado: req.body.estado,
-    },
-
-    { where: { id: req.params.id } }
-  ).then(() => {
-    res.status(200).send("Pedido ACTUALIZADO con éxito");
-  });
+  const pedidoActualizado = req.body;
+  Pedido.update(pedidoActualizado, { where: { id: req.params.id } }).then(
+    () => {
+      res.status(200).send("Pedido ACTUALIZADO con éxito");
+    }
+  );
 });
 //SERVIDOR
 
