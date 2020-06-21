@@ -1,0 +1,429 @@
+---
+swagger: "2.0"
+info:
+  description: Documentación para aplicacion Delilah Resto. Proyecto de Naira Coppari Giménez
+  version: 1.0.0
+  title: Proyecto Delilah Resto
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: virtserver.swaggerhub.com
+basePath: /nairalucila/Delilah-Resto/1.0.0
+tags:
+- name: usuarios
+  description: Usuarios que obtenemos y registramos en la base de datos
+  externalDocs:
+    description: GitHub
+    url: https://github.com/nairalucila/DelilahResto
+- name: platos
+  description: Platos de Delilah Resto
+  externalDocs:
+    description: GitHub
+    url: https://github.com/nairalucila/DelilahResto
+- name: pedidos
+  description: Pedidos que hacen los usuarios al restaurante
+  externalDocs:
+    description: GitHub
+    url: https://github.com/nairalucila/DelilahResto
+schemes:
+- https
+- http
+paths:
+  /pedidos:
+    get:
+      tags:
+      - Pedidos
+      summary: Traer todos los pedidos o los pedidos del usuario que solicitó
+      operationId: getPedidos
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: pedidos
+        in: path
+        description: se hace un get de los pedidos, según el token será la devolucion
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Objeto Json
+          schema:
+            $ref: '#/definitions/Pedidos'
+        "400":
+          description: No autorizado
+        "404":
+          description: No cuenta con pedidos
+    post:
+      tags:
+      - Pedidos
+      summary: Agregar un nuevo pedido a la base de datos del admin
+      operationId: postPedido
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: Objeto json
+        required: true
+        schema:
+          $ref: '#/definitions/Pedidos'
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Pedidos'
+        "400":
+          description: Invalid status value blabl
+  /pedidos/{id}:
+    put:
+      tags:
+      - Pedidos
+      summary: Actualizar pedido
+      description: Actualizar pedido
+      operationId: actualizarPedidos
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: id
+        in: path
+        description: se ingresa al id del pedido
+        required: true
+        type: array
+        items:
+          type: string
+          default: available
+        collectionFormat: csv
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Pedidos'
+        "400":
+          description: Invalid status value blabl
+    delete:
+      tags:
+      - Pedidos
+      summary: Eliminar pedidos por medio de id
+      operationId: deletePedidos
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: id
+        in: path
+        description: ""
+        required: true
+        type: array
+        items:
+          type: string
+        collectionFormat: csv
+      responses:
+        "200":
+          description: Pedido ELIMINADO exitosamente
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Pedidos'
+        "400":
+          description: Hubo un error
+  /platos:
+    get:
+      tags:
+      - Platos
+      summary: Retorna los platos creados
+      description: Returns a map of status codes to quantities
+      operationId: getPlatos
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: object
+            additionalProperties:
+              type: integer
+              format: int32
+    post:
+      tags:
+      - Platos
+      summary: Traer todos los platos
+      operationId: placeOrder
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: crear plato
+        required: true
+        schema:
+          $ref: '#/definitions/Platos'
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Platos'
+        "400":
+          description: Invalid Order
+  /platos/{id}:
+    put:
+      tags:
+      - Platos
+      summary: Actualizar plato por Id
+      description: ""
+      operationId: getPlatosById
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: id
+        in: path
+        description: ID del plato
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Platos'
+        "400":
+          description: Invalid ID supplied
+    delete:
+      tags:
+      - Platos
+      summary: Eliminar plato
+      operationId: deleteOrder
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: id
+        in: path
+        description: ID of the order that needs to be deleted
+        required: true
+        type: integer
+        minimum: 1
+        format: int64
+      responses:
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Order not found
+  /login:
+    post:
+      tags:
+      - usuarios
+      summary: Ingresar usuario al sistema
+      operationId: Ingresar usuario al sistema
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: Datos del usuario
+        required: true
+        schema:
+          $ref: '#/definitions/body'
+      responses:
+        default:
+          description: successful operation
+  /registro:
+    post:
+      tags:
+      - usuarios
+      summary: Registrar usuario en la base de datos
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: Datos del usuario
+        required: true
+        schema:
+          $ref: '#/definitions/Usuarios'
+      responses:
+        default:
+          description: successful operation
+  /usuarios:
+    get:
+      tags:
+      - usuarios
+      summary: Obtener toda la lista de usuarios de la base de datos
+      operationId: get usuarios
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: usuarios
+        in: path
+        description: The users
+        required: true
+        type: string
+      - name: password
+        in: query
+        description: The password for login in clear text
+        required: true
+        type: string
+      responses:
+        "400":
+          description: Invalid username/password supplied
+        default:
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              type: integer
+              format: int32
+              description: calls per hour allowed by the user
+            X-Expires-After:
+              type: string
+              format: date-time
+              description: date in UTC when token expires
+  /usuarios/{id}:
+    get:
+      tags:
+      - usuarios
+      summary: Obtener usuarios por id
+      operationId: getUserByName
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: id
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Usuarios'
+        "400":
+          description: Invalid username supplied
+        "404":
+          description: User not found
+    put:
+      tags:
+      - usuarios
+      summary: Actualizar usuario por id
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: id
+        in: path
+        description: name that need to be updated
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Updated user object
+        required: true
+        schema:
+          $ref: '#/definitions/Usuarios'
+      responses:
+        "400":
+          description: Invalid user supplied
+        "404":
+          description: User not found
+    delete:
+      tags:
+      - usuarios
+      summary: Eliminar usuario
+      operationId: deleteUser
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: id
+        in: path
+        description: The name that needs to be deleted
+        required: true
+        type: string
+      responses:
+        "400":
+          description: Invalid username supplied
+        "404":
+          description: User not found
+definitions:
+  Platos:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      nombre:
+        type: string
+        format: int64
+      precio:
+        type: integer
+        format: int32
+  Usuarios:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      nombreUsuario:
+        type: string
+      nombreCompleto:
+        type: string
+      email:
+        type: string
+      contraseña:
+        type: string
+      tel:
+        type: integer
+      esAdministrador:
+        type: boolean
+    xml:
+      name: Usuarios
+  Pedidos:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      usuarioID:
+        type: integer
+      platoId:
+        type: integer
+      fecha:
+        type: string
+      hora:
+        type: string
+      estado:
+        type: string
+    xml:
+      name: Pedidos
+  body:
+    type: object
+    properties:
+      email:
+        type: string
+      contraseña:
+        type: string
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io/delilahresto
