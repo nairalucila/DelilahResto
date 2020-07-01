@@ -41,7 +41,7 @@ En este proyecto ud. encontrará los siguientes archivos:
 ## Endpoints
 A continuación Ud. podrá probar las rutas en las que podrá hacer peticiones por medio de Postman o de cualquier otra herramienta similar. Los Endpoinst están especificados en la documentación realizada con Swagger.
 	
-	[https://app.swaggerhub.com/apis-docs/nairalucila/Delilah-Resto/1.0.0#/](https://app.swaggerhub.com/apis-docs/nairalucila/Delilah-Resto/1.0.0#/) 
+[https://app.swaggerhub.com/apis-docs/nairalucila/Delilah-Resto/1.0.0#/](https://app.swaggerhub.com/apis-docs/nairalucila/Delilah-Resto/1.0.0#/) 
 
 ## Base de Datos
 La Base de datos cuenta con 3 modelos de tabla; la tabala Usuarios, Platos y Pedidos. Estas son relacionales, especialmente en la tabla Pedidos que es en donde se almacena el Id del usuario que hace el pedido, con el Id del plato que pidió.
@@ -49,9 +49,10 @@ La Base de datos cuenta con 3 modelos de tabla; la tabala Usuarios, Platos y Ped
 ### Comenzar a probar rutas
 En Postman ingrese, las siguientes rutas para hacer peticiones a la base de datos.
 
-## Importante
-# ¿Cómo probar nuestras rutas?
+# Importante
+### ¿Cómo probar nuestras rutas?
 Cuando ud. necesite hacer una petición para traer información, por ejemplo en Postman, necesitará poner el verbo **GET, POST, PUT, DELETE** seguido la ruta _localhost:3000/platos_ (por ejemplo).
+
 Todas las rutas (excepto la de registro), le pedirán a ud. que pase el token que se creó cuando se logueo en el sistema. La manera en que pasamos este token será asi:
 En la pestaña **Headers** pondremos los siguientes valores:
 	
