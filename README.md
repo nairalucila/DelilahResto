@@ -61,6 +61,10 @@ Estas rutas solo podrán ser solicitadas por un adminsitrador.
 	- put: /usuarios/:id
 	- delete: /usuarios/:id
 
+
+## Importante
+Authorization key
+
 #### Rutas para traer información de Platos.
 La ruta get de platos no necesita autorización para ser solicitada.
 

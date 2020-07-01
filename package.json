@@ -19,7 +19,7 @@
     "nodemon": "^2.0.4"
   },
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon ./index",
     "killport": "killall -9 node",
     "test": "echo \"Error: no test specified\" && exit 1",
     "swagger": "swagger-jsdoc -d swagger/swagger-doc.js example/v2/route*.js"
