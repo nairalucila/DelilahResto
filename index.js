@@ -70,6 +70,16 @@ app.get("/platos", checkToken, async (req, res) => {
   res.json(platos);
 });
 
+app.get("/platos/:id", checkToken, esAdmin, async (req, res) => {
+  const plato= await Plato.findOne({
+    where: { id: req.params.id },
+    attributes: { exclude: ["createdAt", "updatedAt"]}
+  })
+
+  res.json(plato);
+});
+
+
 app.post("/platos", checkToken, esAdmin, (req, res) => {
   const plato = req.body;
   if (!plato) {
@@ -104,6 +114,7 @@ app.put("/platos/:id", checkToken, esAdmin, async (req, res) => {
 app.get("/pedidos", checkToken, async (req, res) => {
   const usuarioDB = await Usuario.findOne({
     where: { email: req.usuario.email },
+    attributes: { exclude: ["createdAt", "updatedAt"] },
   });
 
   if (usuarioDB.esAdministrador) {
@@ -114,11 +125,13 @@ app.get("/pedidos", checkToken, async (req, res) => {
           required: true,
         },
       ],
+      attributes: { exclude: ["createdAt", "updatedAt"] },
     });
     res.json(traertodo);
   } else {
     const traerotravez = await Pedido.findAll({
       where: { usuarioId: usuarioDB.id },
+      attributes: { exclude: ["createdAt", "updatedAt"]}
     });
     res.json(traerotravez);
   }
